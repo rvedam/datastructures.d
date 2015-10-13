@@ -2,8 +2,8 @@ unittest {
     auto l1 = new LinkedList!int;
     auto l2 = new LinkedList!int;
 
-    assert(l1.Empty(), "l1 should be empty");
-    assert(l2.Empty(), "l1 should be empty");
+    assert(l1.empty(), "l1 should be empty");
+    assert(l2.empty(), "l1 should be empty");
 
     foreach(i; 0..6) {
         l1.append(i);
@@ -52,7 +52,7 @@ class LinkedList(T) {
         void append(T value) 
         {
             auto newListNode = new ListNode!(T)(value);
-            if(Empty())
+            if(empty())
             {
                 this.m_head = newListNode;
             }
@@ -98,6 +98,7 @@ class LinkedList(T) {
 
         bool contains(T value)
         {
+            return false;
         }
 
         bool empty()
