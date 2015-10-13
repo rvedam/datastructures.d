@@ -1,3 +1,5 @@
+# datastructures.d
+
 The goal of this project is to create a comprehensive list of data structures
 for the purposes of study as well as usage in applications. The data structures
 themselves will have a common interface and will be generally categorized by the
