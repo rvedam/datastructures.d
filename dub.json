@@ -1,0 +1,17 @@
+{
+	"name": "datastructures",
+	"description": "A minimal D application.",
+	"copyright": "Copyright © 2015, vedam",
+	"authors": ["vedam"],
+	"dependencies": {
+        "datastructures:lists": "*"
+	},
+    "subPackages" : [
+        {
+            "name": "lists",
+            "targetType": "library",
+            "sourcePaths": ["source/lists"],
+            "importPaths": ["source/lists"]
+        }
+    ]
+}
