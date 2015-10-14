@@ -4,9 +4,9 @@ unittest {
     assert((new ListNode!int(3)).value == (new ListNode!(double)(3)).value, "Casting between int and double should be implicit");
 }
 
-class ListNode(T) {
+struct ListNode(T) {
     T m_value;
-    ListNode!(T) m_next;
+    ListNode!(T)* m_next;
 
     this(T value) {
         m_value = value;
@@ -20,7 +20,7 @@ class ListNode(T) {
     @property T value() { return m_value; }
     @property void value(T value) { m_value = value; }
 
-    @property ListNode!(T) next() { return m_next; }
-    @property void next(ListNode!(T) val) { m_next = val; }
+    @property ListNode!(T)* next() { return m_next; }
+    @property void next(ListNode!(T)* val) { m_next = val; }
 }
 

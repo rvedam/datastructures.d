@@ -23,87 +23,87 @@ unittest {
     assert(l1.length == 9);
 }
 
-class LinkedList(T) {
-    import listnode;
-    private:
-        ListNode!(T) m_head;
-        int count;
+//
+// Instead of creating LinkedList as a class we are creating it as a struct. The reason is
+// classes and structs have different semantics in D. Structs are considered value-types where
+// as classes are considered reference types. In D, pointers can not be used with reference-types
+// only with value types. This is for the purposes of prevent object-slicing (https://en.wikipedia.org/wiki/Object_slicing)
+//
+struct LinkedList(T) {
+  import listnode;
+  ListNode!(T)* m_head;
+  int count;
 
-        ListNode!(T) searchForLastListNode(ListNode!(T) curListNode) {
-            auto tmp = m_head;
-            while(tmp.next !is null) 
-            {
-                tmp = tmp.next;
-            }
+  ListNode!(T)* searchForLastListNode(ListNode!(T)* curListNode) {
+    auto tmp = m_head;
+    while(tmp.next !is null) 
+    {
+      tmp = tmp.next;
+    }
 
-            return tmp;
-        }
+    return tmp;
+  }
 
-    public:
-        this() {
-            this.count = int.init;
-        }
+  @property ListNode!(T)* head() { return this.m_head; }
+  @property void head(ListNode!(T)* nhead) {
+    this.m_head = nhead;
+  }
 
-        @property ListNode!(T) head() { return this.m_head; }
-        @property void head(ListNode!(T) nhead) {
-            this.m_head = nhead;
-        }
-        
-        void append(T value) 
+  void append(T value) 
+  {
+    ListNode!(T)* newListNode = cast(ListNode!(T)*)(new ListNode!(T)(value));
+    if(empty())
+    {
+      this.m_head = newListNode;
+    }
+    else
+    {
+      auto tmp = searchForLastListNode(this.m_head);
+      tmp.next = newListNode;
+    }
+    ++this.count;
+  }
+
+  int length() const @property { return this.count; }
+
+  void concat(LinkedList!(T)* l2) {
+    auto tmp = searchForLastListNode(this.m_head);
+    tmp.next = l2.head;
+    this.count += l2.count;
+  }
+
+  void remove(T value)
+  {
+    if(head.value == value)
+    {
+      auto tmp = head;
+      this.head = head.next;
+      delete tmp;
+    }
+    else 
+    {
+      for(auto tmp = head; tmp.next !is null; tmp = tmp.next)
+      {
+        if(tmp.next.value == value)
         {
-            auto newListNode = new ListNode!(T)(value);
-            if(empty())
-            {
-                this.m_head = newListNode;
-            }
-            else
-            {
-                auto tmp = searchForLastListNode(this.m_head);
-                tmp.next = newListNode;
-            }
-            ++this.count;
+          auto delNode = tmp.next;
+          tmp.next = tmp.next.next;
+          delete delNode;
+          --this.count;
+          break;
         }
+      }
+    }
+  }
 
-        int length() const @property { return this.count; }
+  bool contains(T value)
+  {
+    return false;
+  }
 
-        void concat(LinkedList!(T) l2) {
-            auto tmp = searchForLastListNode(this.m_head);
-            tmp.next = l2.head;
-            this.count += l2.count;
-        }
-
-        void remove(T value)
-        {
-            if(head.value == value)
-            {
-                auto tmp = head;
-                this.head = head.next;
-                delete tmp;
-            }
-            else 
-            {
-                for(auto tmp = head; tmp.next !is null; tmp = tmp.next)
-                {
-                    if(tmp.next.value == value)
-                    {
-                        auto delNode = tmp.next;
-                        tmp.next = tmp.next.next;
-                        delete delNode;
-                        --this.count;
-                        break;
-                    }
-                }
-            }
-        }
-
-        bool contains(T value)
-        {
-            return false;
-        }
-
-        bool empty()
-        {
-            return this.count == 0;
-        }
+  bool empty()
+  {
+    return this.count == 0;
+  }
 }
 
