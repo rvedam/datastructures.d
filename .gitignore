@@ -1,5 +1,8 @@
 .dub
+dub.selections.json
+__test__library__
 docs.json
 __dummy.html
 *.o
 *.obj
+*.a
